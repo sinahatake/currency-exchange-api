@@ -11,18 +11,23 @@ repositories {
 }
 
 dependencies {
-    // 1. Jakarta Servlet API: ИСПОЛЬЗУЕМ providedRuntime
-    providedRuntime 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    // Jakarta Servlet API
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 
-    // 2. JDBC Driver для SQLite
+    // JDBC Driver для SQLite
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
 
-    // 3. Jackson (для работы с JSON)
+    // Jackson (для работы с JSON)
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
 
-    // 4. JUnit 5 (Тестирование)
+    // JUnit 5 (Тестирование)
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'

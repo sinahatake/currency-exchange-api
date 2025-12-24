@@ -1,19 +1,17 @@
-package org.example.jdbc.entity;
+package org.example.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExchangeRate {
+public class CurrencyDTO {
     private int id;
-    private int baseCurrencyId;
-    private int targetCurrencyId;
-    private BigDecimal rate;
+    private String name;
+    private String code;
+    private String sign;
 }

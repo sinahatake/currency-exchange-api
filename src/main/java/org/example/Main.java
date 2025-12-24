@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.jdbc.util.ConnectionManager;
+import org.example.util.ConnectionManager;
 
 import java.sql.SQLException;
 

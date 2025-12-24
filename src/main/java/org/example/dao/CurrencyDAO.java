@@ -1,7 +1,7 @@
-package org.example.jdbc.dao;
+package org.example.dao;
 
-import org.example.jdbc.entity.Currency;
-import org.example.jdbc.util.ConnectionManager;
+import org.example.entity.Currency;
+import org.example.util.ConnectionManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +32,12 @@ public class CurrencyDAO {
             SELECT ID, Code, FullName, Sign
             FROM Currencies
             WHERE Code = ?
+            """;
+
+    private final static String FIND_BY_ID_SQL = """
+            SELECT ID, Code, FullName, Sign
+            FROM Currencies
+            WHERE ID = ?
             """;
 
     private final static String UPDATE_SQL = """
@@ -92,6 +98,20 @@ public class CurrencyDAO {
         try (var connection = ConnectionManager.getConnection();
              var statement = connection.prepareStatement(FIND_BY_CODE_SQL)) {
             statement.setString(1, code);
+
+            try (var resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return Optional.empty();
+                }
+                return Optional.of(buildCurrency(resultSet));
+            }
+        }
+    }
+
+    public Optional<Currency> findById(int id) throws SQLException {
+        try (var connection = ConnectionManager.getConnection();
+             var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+            statement.setInt(1, id);
 
             try (var resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {

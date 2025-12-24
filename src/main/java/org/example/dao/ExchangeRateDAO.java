@@ -1,8 +1,10 @@
-package org.example.jdbc.dao;
+package org.example.dao;
 
-import org.example.jdbc.entity.ExchangeRate;
-import org.example.jdbc.util.ConnectionManager;
+import org.example.entity.Currency;
+import org.example.entity.ExchangeRate;
+import org.example.util.ConnectionManager;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 public class ExchangeRateDAO {
     private final static ExchangeRateDAO INSTANCE = new ExchangeRateDAO();
+    private final CurrencyDAO currencyDAO = CurrencyDAO.getInstance();
 
     private final static String SAVE_SQL = """
             INSERT INTO ExchangeRates
@@ -25,11 +28,14 @@ public class ExchangeRateDAO {
             SELECT ID, BaseCurrencyId, TargetCurrencyId, Rate
             FROM ExchangeRates
             """;
-    private final static String FIND_BY_CURRENCY_IDS_SQL = """
-            SELECT ID, BaseCurrencyId, TargetCurrencyId, Rate
-            FROM ExchangeRates
-            WHERE BaseCurrencyId = ?
-            AND TargetCurrencyId = ?
+    private final static String FIND_BY_CURRENCY_CODES_SQL = """
+            SELECT er.ID, er.Rate,
+                                           c1.ID as BaseCurrencyId, c1.Code as BaseCode, c1.FullName as BaseName, c1.Sign as BaseSign,
+                                           c2.ID as TargetCurrencyId, c2.Code as TargetCode, c2.FullName as TargetName, c2.Sign as TargetSign
+                                    FROM ExchangeRates er
+                                    JOIN Currencies c1 ON er.BaseCurrencyId = c1.ID
+                                    JOIN Currencies c2 ON er.TargetCurrencyId = c2.ID
+                                    WHERE c1.Code = ? AND c2.Code = ?
             """;
     private final static String UPDATE_SQL = """
             UPDATE ExchangeRates
@@ -40,8 +46,8 @@ public class ExchangeRateDAO {
     public ExchangeRate save(ExchangeRate rate) throws SQLException {
         try (var connection = ConnectionManager.getConnection();
              var statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, rate.getBaseCurrencyId());
-            statement.setInt(2, rate.getTargetCurrencyId());
+            statement.setInt(1, rate.getBaseCurrency().getId());
+            statement.setInt(2, rate.getTargetCurrency().getId());
             statement.setBigDecimal(3, rate.getRate());
 
             statement.executeUpdate();
@@ -66,8 +72,8 @@ public class ExchangeRateDAO {
     public boolean update(ExchangeRate rate) throws SQLException {
         try (var connection = ConnectionManager.getConnection();
              var statement = connection.prepareStatement(UPDATE_SQL)) {
-            statement.setInt(1, rate.getBaseCurrencyId());
-            statement.setInt(2, rate.getTargetCurrencyId());
+            statement.setInt(1, rate.getBaseCurrency().getId());
+            statement.setInt(2, rate.getTargetCurrency().getId());
             statement.setBigDecimal(3, rate.getRate());
             statement.setInt(4, rate.getId());
             return statement.executeUpdate() > 0;
@@ -86,12 +92,12 @@ public class ExchangeRateDAO {
         }
     }
 
-    public Optional<ExchangeRate> findByCurrencyIds(int baseCurrencyId, int targetCurrencyId) throws SQLException {
+    public Optional<ExchangeRate> findByCurrencyCodes(String code1, String code2) throws SQLException {
         try (var connection = ConnectionManager.getConnection();
-             var statement = connection.prepareStatement(FIND_BY_CURRENCY_IDS_SQL)) {
+             var statement = connection.prepareStatement(FIND_BY_CURRENCY_CODES_SQL)) {
 
-            statement.setInt(1, baseCurrencyId);
-            statement.setInt(2, targetCurrencyId);
+            statement.setString(1, code1);
+            statement.setString(2, code2);
 
             try (var resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
@@ -104,12 +110,18 @@ public class ExchangeRateDAO {
     }
 
     private ExchangeRate buildExchangeRate(ResultSet resultSet) throws SQLException {
-        ExchangeRate rate = new ExchangeRate();
-        rate.setId(resultSet.getInt("ID"));
-        rate.setBaseCurrencyId(resultSet.getInt("BaseCurrencyId"));
-        rate.setTargetCurrencyId(resultSet.getInt("TargetCurrencyId"));
-        rate.setRate(resultSet.getBigDecimal("Rate"));
-        return rate;
+        int id = resultSet.getInt("ID");
+        int baseCurrencyId = resultSet.getInt("BaseCurrencyId");
+        int targetCurrencyId = resultSet.getInt("TargetCurrencyId");
+        BigDecimal rate = resultSet.getBigDecimal("Rate");
+
+        Currency baseCurrency = currencyDAO.findById(baseCurrencyId)
+                .orElseThrow(() -> new SQLException("Base currency not found with id " + baseCurrencyId));
+
+        Currency targetCurrency = currencyDAO.findById(targetCurrencyId)
+                .orElseThrow(() -> new SQLException("Target currency not found with id " + targetCurrencyId));
+
+        return new ExchangeRate(id, baseCurrency, targetCurrency, rate);
     }
 
 

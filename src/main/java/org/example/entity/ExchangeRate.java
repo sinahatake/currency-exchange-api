@@ -1,17 +1,19 @@
-package org.example.jdbc.entity;
+package org.example.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Currency {
+public class ExchangeRate {
     private int id;
-    private String code;
-    private String fullName;
-    private String sign;
+    private Currency baseCurrency;
+    private Currency targetCurrency;
+    private BigDecimal rate;
 }

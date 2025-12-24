@@ -1,4 +1,4 @@
-package org.example.jdbc.util;
+package org.example.util;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
