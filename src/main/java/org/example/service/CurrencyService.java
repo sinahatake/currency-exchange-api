@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.MapperDTO.CurrencyMapper;
+import org.example.mapperDto.CurrencyMapper;
 import org.example.dao.CurrencyDAO;
 import org.example.dto.CurrencyDTO;
 import org.example.entity.Currency;
@@ -35,18 +35,29 @@ public class CurrencyService {
     }
 
     public CurrencyDTO findByCode(String code) throws SQLException {
+        if (code == null || code.length() != 3) {
+            throw new InvalidParameterException("Invalid currency code");
+        }
         return currencyDAO.findByCode(code)
                 .map(currencyMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Currency with code " + code + " not found"));
     }
 
     public CurrencyDTO addNewCurrency(String code, String name, String sign) throws SQLException {
-        if (code == null || code.length() != 3) {
-            throw new InvalidParameterException("Invalid currency code");
+        if (code == null || code.isBlank() ||
+            name == null || name.isBlank() ||
+            sign == null || sign.isBlank()) {
+            throw new InvalidParameterException("Missing form fields: all fields (code, name, sign) are required");
         }
 
-        if (currencyDAO.findByCode(code).isPresent()) {
-            throw new AlreadyExistsException("Currency with code " + code + " already exists");
+        if (code.trim().length() != 3) {
+            throw new InvalidParameterException("Invalid currency code: must be exactly 3 characters");
+        }
+
+        String formattedCode = code.trim().toUpperCase();
+
+        if (currencyDAO.findByCode(formattedCode).isPresent()) {
+            throw new AlreadyExistsException("Currency with code " + formattedCode + " already exists");
         }
 
         Currency currency = new Currency();

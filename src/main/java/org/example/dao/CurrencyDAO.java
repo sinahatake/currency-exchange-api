@@ -56,7 +56,7 @@ public class CurrencyDAO {
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
-                currency.setId(keys.getInt("ID"));
+                currency.setId(keys.getInt(1));
             }
             return currency;
         }
@@ -124,7 +124,7 @@ public class CurrencyDAO {
 
     private Currency buildCurrency(ResultSet resultSet) throws SQLException {
         Currency currency = new Currency();
-        currency.setId(resultSet.getInt("ID"));
+        currency.setId(resultSet.getInt(1));
         currency.setCode(resultSet.getString("Code"));
         currency.setFullName(resultSet.getString("FullName"));
         currency.setSign(resultSet.getString("Sign"));

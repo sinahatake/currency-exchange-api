@@ -1,6 +1,7 @@
 package org.example.service;
 
-import org.example.MapperDTO.ExchangeRateMapper;
+import org.example.mapperDto.ExchangeRateMapper;
+import org.example.dao.CurrencyDAO;
 import org.example.dao.ExchangeRateDAO;
 import org.example.dto.CurrencyDTO;
 import org.example.dto.ExchangeRateDTO;
@@ -18,14 +19,16 @@ import java.util.Optional;
 
 public class ExchangeRateService {
     private final ExchangeRateDAO exchangeRateDAO;
+    private final CurrencyDAO currencyDAO;
     private final ExchangeRateMapper exchangeRateMapper;
     private final CurrencyService currencyService;
 
     public ExchangeRateService(
-            ExchangeRateDAO exchangeRateDAO,
+            ExchangeRateDAO exchangeRateDAO, CurrencyDAO currencyDAO,
             ExchangeRateMapper exchangeRateMapper,
             CurrencyService currencyService) {
         this.exchangeRateDAO = exchangeRateDAO;
+        this.currencyDAO = currencyDAO;
         this.exchangeRateMapper = exchangeRateMapper;
         this.currencyService = currencyService;
     }
@@ -42,6 +45,9 @@ public class ExchangeRateService {
     }
 
     public ExchangeRateDTO getExchangeRateByCodes(String baseCode, String targetCode) throws SQLException {
+        if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
+            throw new InvalidParameterException("Invalid currency code");
+        }
         return exchangeRateDAO.findByCurrencyCodes(baseCode, targetCode)
                 .map(exchangeRateMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Exchange rate with codes " + baseCode + targetCode + " not found"));
@@ -59,6 +65,14 @@ public class ExchangeRateService {
             throw new AlreadyExistsException("Exchange rate for pair " + baseCode + " -> " + targetCode + " already exists");
         }
 
+        if (currencyDAO.findByCode(targetCode).isEmpty()) {
+            throw new EntityNotFoundException("Currency " + targetCode + " is not exists");
+        }
+
+        if (currencyDAO.findByCode(baseCode).isEmpty()) {
+            throw new EntityNotFoundException("Currency " + baseCode + " is not exists");
+        }
+
         ExchangeRateDTO exchangeRate = new ExchangeRateDTO();
         exchangeRate.setBaseCurrency(baseCurrency);
         exchangeRate.setTargetCurrency(targetCurrency);
@@ -69,19 +83,22 @@ public class ExchangeRateService {
     }
 
     public ExchangeRateDTO updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) throws SQLException {
-        CurrencyDTO baseCurrency = currencyService.findByCode(baseCode);
-        CurrencyDTO targetCurrency = currencyService.findByCode(targetCode);
-
-        ExchangeRateDTO exchangeRate = new ExchangeRateDTO();
-        exchangeRate.setBaseCurrency(baseCurrency);
-        exchangeRate.setTargetCurrency(targetCurrency);
-        exchangeRate.setRate(rate.setScale(2, RoundingMode.HALF_UP));
-        boolean isUpdated = exchangeRateDAO.update(exchangeRateMapper.toEntity(exchangeRate));
-        if (!isUpdated) {
-            throw new EntityNotFoundException("Exchange rate with codes " + baseCode + targetCode + " not found");
+        if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
+            throw new InvalidParameterException("Invalid currency code");
         }
 
-        return exchangeRate;
+        ExchangeRate existingEntity = exchangeRateDAO.findByCurrencyCodes(baseCode, targetCode)
+                .orElseThrow(() -> new EntityNotFoundException("Exchange rate with codes " + baseCode + targetCode + " not found"));
+
+        existingEntity.setRate(rate.setScale(2, RoundingMode.HALF_UP));
+
+        boolean isUpdated = exchangeRateDAO.update(existingEntity);
+
+        if (!isUpdated) {
+            throw new SQLException("Failed to update exchange rate in database");
+        }
+
+        return exchangeRateMapper.toDto(existingEntity);
     }
 
     public Optional<ExchangeRateDTO> findByCodes(String baseCode, String targetCode) throws SQLException {

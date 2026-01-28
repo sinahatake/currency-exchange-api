@@ -53,7 +53,7 @@ public class ExchangeRateDAO {
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
-                rate.setId(keys.getInt("ID"));
+                rate.setId(keys.getInt("1"));
             }
             return rate;
 
@@ -96,32 +96,61 @@ public class ExchangeRateDAO {
         try (var connection = ConnectionManager.getConnection();
              var statement = connection.prepareStatement(FIND_BY_CURRENCY_CODES_SQL)) {
 
-            statement.setString(1, code1);
-            statement.setString(2, code2);
+            statement.setString(1, code1.trim().toUpperCase());
+            statement.setString(2, code2.trim().toUpperCase());
 
             try (var resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
+                    System.out.println("DAO не нашел пару для: [" + code1 + "] и [" + code2 + "]");
                     return Optional.empty();
                 }
                 return Optional.of(buildExchangeRate(resultSet));
             }
-
         }
     }
 
     private ExchangeRate buildExchangeRate(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt("ID");
-        int baseCurrencyId = resultSet.getInt("BaseCurrencyId");
-        int targetCurrencyId = resultSet.getInt("TargetCurrencyId");
+        // Если в ResultSet есть колонки из JOIN (BaseCode, TargetCode и т.д.),
+        // лучше брать их сразу, а не мучить CurrencyDAO
+
+        int id = resultSet.getInt(1);
         BigDecimal rate = resultSet.getBigDecimal("Rate");
 
-        Currency baseCurrency = currencyDAO.findById(baseCurrencyId)
-                .orElseThrow(() -> new SQLException("Base currency not found with id " + baseCurrencyId));
+        // Пытаемся взять данные из JOIN, если они есть (для поиска по кодам)
+        // Если их нет (для простого findAll), используем CurrencyDAO
+        Currency baseCurrency;
+        Currency targetCurrency;
 
-        Currency targetCurrency = currencyDAO.findById(targetCurrencyId)
-                .orElseThrow(() -> new SQLException("Target currency not found with id " + targetCurrencyId));
+        if (hasColumn(resultSet, "BaseCode")) {
+            baseCurrency = new Currency(
+                    resultSet.getInt("BaseCurrencyId"),
+                    resultSet.getString("BaseCode"),
+                    resultSet.getString("BaseName"),
+                    resultSet.getString("BaseSign")
+            );
+            targetCurrency = new Currency(
+                    resultSet.getInt("TargetCurrencyId"),
+                    resultSet.getString("TargetCode"),
+                    resultSet.getString("TargetName"),
+                    resultSet.getString("TargetSign")
+            );
+        } else {
+            // Запасной вариант для findAll
+            baseCurrency = currencyDAO.findById(resultSet.getInt("BaseCurrencyId")).orElse(null);
+            targetCurrency = currencyDAO.findById(resultSet.getInt("TargetCurrencyId")).orElse(null);
+        }
 
         return new ExchangeRate(id, baseCurrency, targetCurrency, rate);
+    }
+
+    // Вспомогательный метод, чтобы не падать, если колонок нет
+    private boolean hasColumn(ResultSet rs, String columnName) {
+        try {
+            rs.findColumn(columnName);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
 

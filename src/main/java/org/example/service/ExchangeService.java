@@ -4,6 +4,7 @@ import org.example.dto.CurrencyDTO;
 import org.example.dto.ExchangeRateDTO;
 import org.example.dto.ExchangeResultDTO;
 import org.example.exceptions.EntityNotFoundException;
+import org.example.exceptions.InvalidParameterException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,11 +21,15 @@ public class ExchangeService {
     }
 
     public ExchangeResultDTO exchange(String baseCode, String targetCode, BigDecimal amount) throws SQLException {
+        if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
+            throw new InvalidParameterException("Invalid currency code");
+        }
 
         ExchangeResultDTO result = new ExchangeResultDTO();
 
         CurrencyDTO baseCurrency = currencyService.findByCode(baseCode);
         CurrencyDTO targetCurrency = currencyService.findByCode(targetCode);
+
         result.setBaseCurrency(baseCurrency);
         result.setTargetCurrency(targetCurrency);
         result.setAmount(amount);
@@ -34,7 +39,7 @@ public class ExchangeService {
         return result;
     }
 
-    public BigDecimal calculateRate(String baseCode, String targetCode) throws SQLException {
+    BigDecimal calculateRate(String baseCode, String targetCode) throws SQLException {
 
         Optional<ExchangeRateDTO> directRate = exchangeRateService.findByCodes(baseCode, targetCode);
         if (directRate.isPresent()) {

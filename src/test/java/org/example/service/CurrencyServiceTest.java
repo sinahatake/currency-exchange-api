@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.MapperDTO.CurrencyMapper;
+import org.example.mapperDto.CurrencyMapper;
 import org.example.dao.CurrencyDAO;
 import org.example.dto.CurrencyDTO;
 import org.example.entity.Currency;

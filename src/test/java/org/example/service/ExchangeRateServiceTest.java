@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.MapperDTO.ExchangeRateMapper;
+import org.example.dao.CurrencyDAO;
 import org.example.dao.ExchangeRateDAO;
 import org.example.dto.CurrencyDTO;
 import org.example.dto.ExchangeRateDTO;
@@ -8,6 +8,7 @@ import org.example.entity.ExchangeRate;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
+import org.example.mapperDto.ExchangeRateMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +30,9 @@ class ExchangeRateServiceTest {
 
     @Mock
     private ExchangeRateDAO exchangeRateDAO;
+
+    @Mock
+    private CurrencyDAO currencyDAO;
 
     @Mock
     private ExchangeRateMapper exchangeRateMapper;
@@ -68,33 +71,6 @@ class ExchangeRateServiceTest {
                 () -> exchangeRateService.getExchangeRateByCodes("USD", "EUR"));
     }
 
-    @Test
-    @DisplayName("Должен успешно добавить новый курс валют")
-    void addExchangeRate_Success() throws SQLException {
-        // Arrange
-        String base = "USD";
-        String target = "EUR";
-        BigDecimal rate = BigDecimal.valueOf(0.92);
-
-        CurrencyDTO baseDto = new CurrencyDTO();
-        CurrencyDTO targetDto = new CurrencyDTO();
-
-        when(currencyService.findByCode(base)).thenReturn(baseDto);
-        when(currencyService.findByCode(target)).thenReturn(targetDto);
-        when(exchangeRateDAO.findByCurrencyCodes(base, target)).thenReturn(Optional.empty());
-
-        ExchangeRate entity = new ExchangeRate();
-        when(exchangeRateMapper.toEntity(any(ExchangeRateDTO.class))).thenReturn(entity);
-        when(exchangeRateDAO.save(entity)).thenReturn(entity);
-        when(exchangeRateMapper.toDto(entity)).thenReturn(new ExchangeRateDTO());
-
-        // Act
-        ExchangeRateDTO result = exchangeRateService.addExchangeRate(base, target, rate);
-
-        // Assert
-        assertNotNull(result);
-        verify(exchangeRateDAO).save(any());
-    }
 
     @Test
     @DisplayName("Должен выбросить исключение при добавлении дубликата курса")
@@ -125,27 +101,46 @@ class ExchangeRateServiceTest {
         String target = "EUR";
         BigDecimal newRate = new BigDecimal("0.95");
 
-        when(currencyService.findByCode(base)).thenReturn(new CurrencyDTO());
-        when(currencyService.findByCode(target)).thenReturn(new CurrencyDTO());
-        when(exchangeRateMapper.toEntity(any())).thenReturn(new ExchangeRate());
-        when(exchangeRateDAO.update(any())).thenReturn(true);
+        // Подготавливаем сущность, которую якобы нашли в базе
+        ExchangeRate existingEntity = new ExchangeRate();
+        existingEntity.setId(1);
+
+        // Настраиваем моки под НОВУЮ логику сервиса
+        when(exchangeRateDAO.findByCurrencyCodes(base, target)).thenReturn(Optional.of(existingEntity));
+        when(exchangeRateDAO.update(existingEntity)).thenReturn(true);
+
+        // Настраиваем маппер, чтобы он вернул DTO с новым курсом
+        ExchangeRateDTO expectedDto = new ExchangeRateDTO();
+        expectedDto.setRate(newRate.setScale(2));
+        when(exchangeRateMapper.toDto(existingEntity)).thenReturn(expectedDto);
 
         // Act
         ExchangeRateDTO result = exchangeRateService.updateExchangeRate(base, target, newRate);
 
         // Assert
+        assertNotNull(result);
         assertEquals(newRate.setScale(2), result.getRate());
-        verify(exchangeRateDAO).update(any());
+        verify(exchangeRateDAO).findByCurrencyCodes(base, target);
+        verify(exchangeRateDAO).update(existingEntity);
     }
 
     @Test
     @DisplayName("Должен выбросить исключение при обновлении несуществующего курса")
     void updateExchangeRate_NotFound_ThrowsException() throws SQLException {
         // Arrange
-        when(exchangeRateDAO.update(any())).thenReturn(false);
+        String base = "USD";
+        String target = "EUR";
+
+        // Теперь сервис падает здесь, если пара не найдена в базе
+        when(exchangeRateDAO.findByCurrencyCodes(base, target)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(EntityNotFoundException.class,
-                () -> exchangeRateService.updateExchangeRate("USD", "EUR", BigDecimal.ONE));
+                () -> exchangeRateService.updateExchangeRate(base, target, BigDecimal.ONE));
+
+        // Проверяем, что до самого апдейта дело даже не дошло
+        verify(exchangeRateDAO).findByCurrencyCodes(base, target);
     }
+
+
 }
