@@ -5,81 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3ce5d42-dc0d-4d6e-994a-dd5ce7ba19e6" name="Changes" comment="Add frontend and fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/config/ApplicationContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/dto/ErrorResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/BaseServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/CurrenciesServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/EncodingFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/SingleCurrencyServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/SingleExchangeRateServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-grid.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-reboot.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap-utilities.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.bundle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.bundle.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.bundle.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.bundle.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.esm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.esm.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.esm.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.esm.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/bootstrap.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/jquery-3.6.3.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/integration/CurrenciesApiIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/integration/ExchangeApiIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/integration/ExchangeRatesApiIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/DatabaseInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MapperDTO/CurrencyMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/mapperDto/CurrencyMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MapperDTO/ExchangeRateMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/mapperDto/ExchangeRateMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/CurrencyDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/CurrencyDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/ExchangeRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/ExchangeRateDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CurrencyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CurrencyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/ExchangeRateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/ExchangeRateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/ExchangeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/ExchangeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/servlet/CurrencyServlet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/servlet/ExchangeRateServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/ExchangeRateServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/servlet/ExchangeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/ExchangeServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/servlet/CurrenciesServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/servlet/CurrenciesServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/ConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/util/ConnectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/currency-exchange.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/database/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CurrencyServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CurrencyServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/ExchangeRateServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/ExchangeRateServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,56 +109,57 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build currency-exchange-api.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrenciesApiIntegrationTest (1).executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrenciesApiIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrenciesApiIntegrationTest.postCurrency_InvalidParam.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrenciesApiIntegrationTest.postCurrency_Success.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrenciesServletTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CurrencyServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeApiIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeRateServiceTest.addExchangeRate_Success.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeRateServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeRatesApiIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeRatesApiIntegrationTest.patchExchangeRate_Success.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExchangeServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'currency-exchange-api.test'.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'org.example.integration'.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'org.example.service'.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.currency-exchange-api [:org.example.DbTest.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.currency-exchange-api [:org.example.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.currency-exchange-api [:org.example.jdbc.JdbcRunner.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.currency-exchange-api [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.currency-exchange-api [clean].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.Tomcat 10.1.50.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Sinahatake/IdeaProjects/currency-exchange-api/src/main/webapp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build currency-exchange-api.executor": "Run",
+    "Gradle.CurrenciesApiIntegrationTest (1).executor": "Run",
+    "Gradle.CurrenciesApiIntegrationTest.executor": "Run",
+    "Gradle.CurrenciesApiIntegrationTest.postCurrency_InvalidParam.executor": "Run",
+    "Gradle.CurrenciesApiIntegrationTest.postCurrency_Success.executor": "Run",
+    "Gradle.CurrenciesServletTest.executor": "Run",
+    "Gradle.CurrencyServiceTest.executor": "Run",
+    "Gradle.ExchangeApiIntegrationTest.executor": "Run",
+    "Gradle.ExchangeRateServiceTest.addExchangeRate_Success.executor": "Run",
+    "Gradle.ExchangeRateServiceTest.executor": "Run",
+    "Gradle.ExchangeRatesApiIntegrationTest.executor": "Run",
+    "Gradle.ExchangeRatesApiIntegrationTest.patchExchangeRate_Success.executor": "Run",
+    "Gradle.ExchangeRatesApiIntegrationTest.postExchangeRate_Success.executor": "Run",
+    "Gradle.ExchangeServiceTest.executor": "Run",
+    "Gradle.Tests in 'currency-exchange-api.test'.executor": "Run",
+    "Gradle.Tests in 'org.example.integration'.executor": "Run",
+    "Gradle.Tests in 'org.example.service'.executor": "Run",
+    "Gradle.currency-exchange-api [:org.example.DbTest.main()].executor": "Run",
+    "Gradle.currency-exchange-api [:org.example.Main.main()].executor": "Run",
+    "Gradle.currency-exchange-api [:org.example.jdbc.JdbcRunner.main()].executor": "Run",
+    "Gradle.currency-exchange-api [build].executor": "Run",
+    "Gradle.currency-exchange-api [clean].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Tomcat Server.Tomcat 10.1.50.executor": "Run",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Sinahatake/IdeaProjects/currency-exchange-api/src/main/webapp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlite&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
     ],
-    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
-      &quot;SQLite&quot;
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "SQLite"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Sinahatake\IdeaProjects\currency-exchange-api\src\main\webapp" />
@@ -288,7 +225,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ExchangeServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ExchangeRatesApiIntegrationTest.postExchangeRate_Success" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -301,7 +238,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.example.service.ExchangeServiceTest&quot;" />
+            <option value="&quot;org.example.integration.ExchangeRatesApiIntegrationTest.postExchangeRate_Success&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -447,20 +384,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Gradle.ExchangeRatesApiIntegrationTest.postExchangeRate_Success" />
       <item itemvalue="Gradle.ExchangeRateServiceTest" />
       <item itemvalue="Gradle.ExchangeRateServiceTest.addExchangeRate_Success" />
-      <item itemvalue="Gradle.ExchangeServiceTest" />
       <item itemvalue="Gradle.Tests in 'org.example.integration'" />
       <item itemvalue="Gradle.currency-exchange-api [build]" />
       <item itemvalue="Tomcat Server.Tomcat 10.1.50" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.currency-exchange-api [build]" />
         <item itemvalue="Gradle.Tests in 'org.example.integration'" />
+        <item itemvalue="Gradle.ExchangeRatesApiIntegrationTest.postExchangeRate_Success" />
+        <item itemvalue="Gradle.currency-exchange-api [build]" />
         <item itemvalue="Gradle.ExchangeRateServiceTest.addExchangeRate_Success" />
         <item itemvalue="Gradle.ExchangeRateServiceTest" />
-        <item itemvalue="Gradle.ExchangeServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -497,7 +434,8 @@
       <workItem from="1769261138051" duration="5158000" />
       <workItem from="1769274921979" duration="2814000" />
       <workItem from="1769277785021" duration="835000" />
-      <workItem from="1769604362489" duration="2457000" />
+      <workItem from="1769604362489" duration="9039000" />
+      <workItem from="1769684428597" duration="2060000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -515,7 +453,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766075713948</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add frontend and fix">
+      <option name="closed" value="true" />
+      <created>1769607038613</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1769607038613</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

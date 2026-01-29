@@ -56,17 +56,20 @@ public class CurrencyService {
 
         String formattedCode = code.trim().toUpperCase();
 
-        if (currencyDAO.findByCode(formattedCode).isPresent()) {
-            throw new AlreadyExistsException("Currency with code " + formattedCode + " already exists");
-        }
-
         Currency currency = new Currency();
         currency.setCode(code);
         currency.setFullName(name);
         currency.setSign(sign);
 
-        Currency saved = currencyDAO.save(currency);
-        return currencyMapper.toDto(saved);
+        try {
+            Currency saved = currencyDAO.save(currency);
+            return currencyMapper.toDto(saved);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19 || e.getMessage().contains("UNIQUE constraint failed")) {
+                throw new AlreadyExistsException("Currency with code " + formattedCode + " already exists");
+            }
+            throw e;
+        }
     }
 
 }

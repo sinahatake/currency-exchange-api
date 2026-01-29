@@ -16,6 +16,7 @@ dependencies {
 
     // JDBC Driver для SQLite - версия 3.45.1.0 отличная
     implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
 
     // Jackson - оставляем одну версию
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'

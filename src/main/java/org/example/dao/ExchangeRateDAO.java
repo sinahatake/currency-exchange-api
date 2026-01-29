@@ -53,7 +53,7 @@ public class ExchangeRateDAO {
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
-                rate.setId(keys.getInt("1"));
+                rate.setId(keys.getInt(1));
             }
             return rate;
 

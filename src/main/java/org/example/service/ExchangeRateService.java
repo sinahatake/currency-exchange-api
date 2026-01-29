@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.mapperDto.ExchangeRateMapper;
 import org.example.dao.CurrencyDAO;
 import org.example.dao.ExchangeRateDAO;
 import org.example.dto.CurrencyDTO;
@@ -9,6 +8,7 @@ import org.example.entity.ExchangeRate;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
+import org.example.mapperDto.ExchangeRateMapper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -61,10 +61,6 @@ public class ExchangeRateService {
             throw new InvalidParameterException("Invalid currency code");
         }
 
-        if (exchangeRateDAO.findByCurrencyCodes(baseCode, targetCode).isPresent()) {
-            throw new AlreadyExistsException("Exchange rate for pair " + baseCode + " -> " + targetCode + " already exists");
-        }
-
         if (currencyDAO.findByCode(targetCode).isEmpty()) {
             throw new EntityNotFoundException("Currency " + targetCode + " is not exists");
         }
@@ -77,9 +73,18 @@ public class ExchangeRateService {
         exchangeRate.setBaseCurrency(baseCurrency);
         exchangeRate.setTargetCurrency(targetCurrency);
         exchangeRate.setRate(rate);
+        try {
+            ExchangeRate saved = exchangeRateDAO.save(exchangeRateMapper.toEntity(exchangeRate));
+            return exchangeRateMapper.toDto(saved);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19 || e.getMessage().contains("UNIQUE constraint failed")) {
+                throw new AlreadyExistsException(
+                        "Exchange rate for " + baseCode + "/" + targetCode + " already exists"
+                );
+            }
+            throw e;
+        }
 
-        ExchangeRate saved = exchangeRateDAO.save(exchangeRateMapper.toEntity(exchangeRate));
-        return exchangeRateMapper.toDto(saved);
     }
 
     public ExchangeRateDTO updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) throws SQLException {
