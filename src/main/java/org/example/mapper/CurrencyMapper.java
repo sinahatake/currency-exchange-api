@@ -1,4 +1,4 @@
-package org.example.mapperDto;
+package org.example.mapper;
 
 import org.example.dto.CurrencyDTO;
 import org.example.entity.Currency;

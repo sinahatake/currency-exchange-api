@@ -1,14 +1,13 @@
 package org.example.service;
 
-import org.example.dao.CurrencyDAO;
-import org.example.dao.ExchangeRateDAO;
+import org.example.dao.ExchangeRateDao;
 import org.example.dto.CurrencyDTO;
 import org.example.dto.ExchangeRateDTO;
 import org.example.entity.ExchangeRate;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
-import org.example.mapperDto.ExchangeRateMapper;
+import org.example.mapper.ExchangeRateMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +28,7 @@ import static org.mockito.Mockito.when;
 class ExchangeRateServiceTest {
 
     @Mock
-    private ExchangeRateDAO exchangeRateDAO;
-
-    @Mock
-    private CurrencyDAO currencyDAO;
+    private ExchangeRateDao exchangeRateDAO;
 
     @Mock
     private ExchangeRateMapper exchangeRateMapper;
@@ -45,7 +41,7 @@ class ExchangeRateServiceTest {
 
     @Test
     @DisplayName("Должен вернуть список всех курсов валют")
-    void getAllExchangeRates_ReturnsList() throws SQLException {
+    void getAllExchangeRates_ReturnsList() {
         // Arrange
         ExchangeRate entity = new ExchangeRate();
         ExchangeRateDTO dto = new ExchangeRateDTO();
@@ -62,7 +58,7 @@ class ExchangeRateServiceTest {
 
     @Test
     @DisplayName("Должен выбросить исключение, если курс не найден по кодам")
-    void getExchangeRateByCodes_NotFound_ThrowsException() throws SQLException {
+    void getExchangeRateByCodes_NotFound_ThrowsException() {
         // Arrange
         when(exchangeRateDAO.findByCurrencyCodes("USD", "EUR")).thenReturn(Optional.empty());
 
@@ -74,7 +70,7 @@ class ExchangeRateServiceTest {
 
     @Test
     @DisplayName("Должен выбросить исключение при добавлении дубликата курса")
-    void addExchangeRate_AlreadyExists_ThrowsException() throws SQLException {
+    void addExchangeRate_AlreadyExists_ThrowsException() {
         // Arrange
         when(currencyService.findByCode("USD")).thenReturn(new CurrencyDTO());
         when(currencyService.findByCode("EUR")).thenReturn(new CurrencyDTO());
@@ -87,7 +83,7 @@ class ExchangeRateServiceTest {
 
     @Test
     @DisplayName("Должен выбросить InvalidParameterException при некорректном коде валюты")
-    void addExchangeRate_InvalidCode_ThrowsException() throws SQLException {
+    void addExchangeRate_InvalidCode_ThrowsException() {
         // Act & Assert (код "US" слишком короткий)
         assertThrows(InvalidParameterException.class,
                 () -> exchangeRateService.addExchangeRate("US", "EUR", BigDecimal.ONE));
@@ -95,7 +91,7 @@ class ExchangeRateServiceTest {
 
     @Test
     @DisplayName("Должен успешно обновить существующий курс")
-    void updateExchangeRate_Success() throws SQLException {
+    void updateExchangeRate_Success() {
         // Arrange
         String base = "USD";
         String target = "EUR";
@@ -111,7 +107,7 @@ class ExchangeRateServiceTest {
 
         // Настраиваем маппер, чтобы он вернул DTO с новым курсом
         ExchangeRateDTO expectedDto = new ExchangeRateDTO();
-        expectedDto.setRate(newRate.setScale(2));
+        expectedDto.setRate(newRate.setScale(2, RoundingMode.HALF_UP));
         when(exchangeRateMapper.toDto(existingEntity)).thenReturn(expectedDto);
 
         // Act
@@ -119,14 +115,14 @@ class ExchangeRateServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(newRate.setScale(2), result.getRate());
+        assertEquals(newRate.setScale(2, RoundingMode.HALF_UP), result.getRate());
         verify(exchangeRateDAO).findByCurrencyCodes(base, target);
         verify(exchangeRateDAO).update(existingEntity);
     }
 
     @Test
     @DisplayName("Должен выбросить исключение при обновлении несуществующего курса")
-    void updateExchangeRate_NotFound_ThrowsException() throws SQLException {
+    void updateExchangeRate_NotFound_ThrowsException() {
         // Arrange
         String base = "USD";
         String target = "EUR";

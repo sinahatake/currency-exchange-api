@@ -1,12 +1,12 @@
 package org.example.service;
 
-import org.example.mapperDto.CurrencyMapper;
-import org.example.dao.CurrencyDAO;
+import org.example.dao.CurrencyDao;
 import org.example.dto.CurrencyDTO;
 import org.example.entity.Currency;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
+import org.example.mapper.CurrencyMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.*;
 class CurrencyServiceTest {
 
     @Mock
-    private CurrencyDAO currencyDAO;
+    private CurrencyDao currencyDAO;
 
     @Mock
     private CurrencyMapper currencyMapper;
@@ -36,7 +35,7 @@ class CurrencyServiceTest {
 
     @Test
     @DisplayName("getAllCurrencies должен возвращать список DTO")
-    void getAllCurrencies_ReturnsList() throws SQLException {
+    void getAllCurrencies_ReturnsList() {
         // Given
         Currency currency = new Currency(1, "USD", "US Dollar", "$");
         CurrencyDTO dto = new CurrencyDTO(1, "US Dollar", "USD", "$");
@@ -56,7 +55,7 @@ class CurrencyServiceTest {
 
     @Test
     @DisplayName("findByCode должен возвращать DTO, если валюта найдена")
-    void findByCode_Found_ReturnsDto() throws SQLException {
+    void findByCode_Found_ReturnsDto() {
         // Given
         String code = "EUR";
         Currency currency = new Currency(2, code, "Euro", "€");
@@ -74,7 +73,7 @@ class CurrencyServiceTest {
 
     @Test
     @DisplayName("findByCode должен выбрасывать EntityNotFoundException, если код не найден")
-    void findByCode_NotFound_ThrowsException() throws SQLException {
+    void findByCode_NotFound_ThrowsException() {
         // Given
         String code = "NON";
         when(currencyDAO.findByCode(code)).thenReturn(Optional.empty());
@@ -85,7 +84,7 @@ class CurrencyServiceTest {
 
     @Test
     @DisplayName("addNewCurrency должен сохранять валюту при корректных данных")
-    void addNewCurrency_ValidData_SavesCurrency() throws SQLException {
+    void addNewCurrency_ValidData_SavesCurrency() {
         // Given
         String code = "GBP";
         String name = "British Pound";
@@ -120,7 +119,7 @@ class CurrencyServiceTest {
 
     @Test
     @DisplayName("addNewCurrency должен выбрасывать AlreadyExistsException, если код уже занят")
-    void addNewCurrency_AlreadyExists_ThrowsException() throws SQLException {
+    void addNewCurrency_AlreadyExists_ThrowsException() {
         // Given
         String code = "USD";
         when(currencyDAO.findByCode(code)).thenReturn(Optional.of(new Currency()));

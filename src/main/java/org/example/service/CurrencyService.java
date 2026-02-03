@@ -1,49 +1,47 @@
 package org.example.service;
 
-import org.example.mapperDto.CurrencyMapper;
-import org.example.dao.CurrencyDAO;
+import org.example.dao.CurrencyDao;
 import org.example.dto.CurrencyDTO;
 import org.example.entity.Currency;
-import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
+import org.example.mapper.CurrencyMapper;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyService {
-    private final CurrencyDAO currencyDAO;
+    private final CurrencyDao CurrencyDao;
     private final CurrencyMapper currencyMapper;
 
     public CurrencyService(
-            CurrencyDAO currencyDAO,
+            CurrencyDao CurrencyDao,
             CurrencyMapper currencyMapper) {
-        this.currencyDAO = currencyDAO;
+        this.CurrencyDao = CurrencyDao;
         this.currencyMapper = currencyMapper;
     }
 
 
-    public List<CurrencyDTO> getAllCurrencies() throws SQLException {
+    public List<CurrencyDTO> getAllCurrencies() {
         List<CurrencyDTO> currencies = new ArrayList<>();
-        List<Currency> currencyDAOAll = currencyDAO.findAll();
-        for (Currency currency : currencyDAOAll) {
+        List<Currency> CurrencyDaoAll = CurrencyDao.findAll();
+        for (Currency currency : CurrencyDaoAll) {
             CurrencyDTO currencyDTO = currencyMapper.toDto(currency);
             currencies.add(currencyDTO);
         }
         return currencies;
     }
 
-    public CurrencyDTO findByCode(String code) throws SQLException {
+    public CurrencyDTO findByCode(String code) {
         if (code == null || code.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
         }
-        return currencyDAO.findByCode(code)
+        return CurrencyDao.findByCode(code)
                 .map(currencyMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Currency with code " + code + " not found"));
     }
 
-    public CurrencyDTO addNewCurrency(String code, String name, String sign) throws SQLException {
+    public CurrencyDTO addNewCurrency(String code, String name, String sign) {
         if (code == null || code.isBlank() ||
             name == null || name.isBlank() ||
             sign == null || sign.isBlank()) {
@@ -57,19 +55,12 @@ public class CurrencyService {
         String formattedCode = code.trim().toUpperCase();
 
         Currency currency = new Currency();
-        currency.setCode(code);
+        currency.setCode(formattedCode);
         currency.setFullName(name);
         currency.setSign(sign);
+        Currency saved = CurrencyDao.save(currency);
+        return currencyMapper.toDto(saved);
 
-        try {
-            Currency saved = currencyDAO.save(currency);
-            return currencyMapper.toDto(saved);
-        } catch (SQLException e) {
-            if (e.getErrorCode() == 19 || e.getMessage().contains("UNIQUE constraint failed")) {
-                throw new AlreadyExistsException("Currency with code " + formattedCode + " already exists");
-            }
-            throw e;
-        }
     }
 
 }

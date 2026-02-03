@@ -1,29 +1,31 @@
 package org.example.config;
 
-import org.example.mapperDto.CurrencyMapper;
-import org.example.mapperDto.ExchangeRateMapper;
-import org.example.dao.CurrencyDAO;
-import org.example.dao.ExchangeRateDAO;
+import org.example.dao.CurrencyDao;
+import org.example.dao.CurrencyDaoImpl;
+import org.example.dao.ExchangeRateDao;
+import org.example.dao.ExchangeRateDaoImpl;
+import org.example.mapper.CurrencyMapper;
+import org.example.mapper.ExchangeRateMapper;
 import org.example.service.CurrencyService;
 import org.example.service.ExchangeRateService;
 import org.example.service.ExchangeService;
 
 public class ApplicationContext {
 
-    private static final CurrencyDAO currencyDAO = CurrencyDAO.getInstance();
-    private static final ExchangeRateDAO exchangeRateDAO = ExchangeRateDAO.getInstance();
+    private static final CurrencyDao CurrencyDao = CurrencyDaoImpl.getInstance();
+    private static final ExchangeRateDao ExchangeRateDao = ExchangeRateDaoImpl.getInstance();
 
     private static final CurrencyMapper currencyMapper = new CurrencyMapper();
     private static final ExchangeRateMapper exchangeRateMapper =
             new ExchangeRateMapper(currencyMapper);
 
     private static final CurrencyService currencyService =
-            new CurrencyService(currencyDAO, currencyMapper);
+            new CurrencyService(CurrencyDao, currencyMapper);
 
     private static final ExchangeRateService exchangeRateService =
             new ExchangeRateService(
-                    exchangeRateDAO,
-                    currencyDAO,
+                    ExchangeRateDao,
+                    CurrencyDao,
                     exchangeRateMapper,
                     currencyService
             );
