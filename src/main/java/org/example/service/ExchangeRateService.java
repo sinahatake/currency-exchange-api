@@ -34,8 +34,8 @@ public class ExchangeRateService {
 
     public List<ExchangeRateDTO> getAllExchangeRates() {
         List<ExchangeRateDTO> exchangeRates = new ArrayList<>();
-        List<ExchangeRate> exchangeRatesDao = ExchangeRateDao.findAll();
-        for (ExchangeRate exchangeRate : exchangeRatesDao) {
+        List<ExchangeRate> allExchangeRates = ExchangeRateDao.findAll();
+        for (ExchangeRate exchangeRate : allExchangeRates) {
             ExchangeRateDTO exchangeRateDTO = exchangeRateMapper.toDto(exchangeRate);
             exchangeRates.add(exchangeRateDTO);
         }

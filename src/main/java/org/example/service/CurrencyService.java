@@ -24,8 +24,8 @@ public class CurrencyService {
 
     public List<CurrencyDTO> getAllCurrencies() {
         List<CurrencyDTO> currencies = new ArrayList<>();
-        List<Currency> CurrencyDaoAll = CurrencyDao.findAll();
-        for (Currency currency : CurrencyDaoAll) {
+        List<Currency> allCurrencies = CurrencyDao.findAll();
+        for (Currency currency : allCurrencies) {
             CurrencyDTO currencyDTO = currencyMapper.toDto(currency);
             currencies.add(currencyDTO);
         }
@@ -48,8 +48,19 @@ public class CurrencyService {
             throw new InvalidParameterException("Missing form fields: all fields (code, name, sign) are required");
         }
 
+        Currency currency = getCurrency(code, name, sign);
+        Currency saved = CurrencyDao.save(currency);
+        return currencyMapper.toDto(saved);
+
+    }
+
+    private Currency getCurrency(String code, String name, String sign) {
         if (code.trim().length() != 3) {
             throw new InvalidParameterException("Invalid currency code: must be exactly 3 characters");
+        }
+
+        if (sign.trim().length() > 3) {
+            throw new InvalidParameterException("Invalid currency sign: sign must be 1-3 characters long");
         }
 
         String formattedCode = code.trim().toUpperCase();
@@ -58,9 +69,7 @@ public class CurrencyService {
         currency.setCode(formattedCode);
         currency.setFullName(name);
         currency.setSign(sign);
-        Currency saved = CurrencyDao.save(currency);
-        return currencyMapper.toDto(saved);
-
+        return currency;
     }
 
 }
