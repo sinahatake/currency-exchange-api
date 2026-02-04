@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.config.ApplicationContext;
 import org.example.dto.ExchangeRateDTO;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
@@ -23,7 +22,7 @@ public class SingleExchangeRateServlet extends BaseServlet {
 
     @Override
     public void init() {
-        this.exchangeRateService = ApplicationContext.exchangeRateService();
+        this.exchangeRateService = (ExchangeRateService) getServletContext().getAttribute("exchangeRateService");
     }
 
     @Override

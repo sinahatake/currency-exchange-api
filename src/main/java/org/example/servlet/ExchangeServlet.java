@@ -1,10 +1,8 @@
 package org.example.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.config.ApplicationContext;
 import org.example.dto.ExchangeResultDTO;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
@@ -21,8 +19,8 @@ public class ExchangeServlet extends BaseServlet {
     private static final Logger logger = LoggerFactory.getLogger(ExchangeServlet.class);
 
     @Override
-    public void init() throws ServletException {
-        this.exchangeService = ApplicationContext.exchangeService();
+    public void init() {
+        this.exchangeService = (ExchangeService) getServletContext().getAttribute("exchangeService");
     }
 
     @Override

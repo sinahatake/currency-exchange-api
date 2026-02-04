@@ -3,7 +3,6 @@ package org.example.servlet;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.config.ApplicationContext;
 import org.example.dto.CurrencyDTO;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.InvalidParameterException;
@@ -20,7 +19,7 @@ public class CurrenciesServlet extends BaseServlet {
 
     @Override
     public void init() {
-        this.currencyService = ApplicationContext.currencyService();
+        this.currencyService = (CurrencyService) getServletContext().getAttribute("currencyService");
     }
 
     @Override

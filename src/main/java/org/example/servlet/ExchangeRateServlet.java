@@ -1,10 +1,8 @@
 package org.example.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.config.ApplicationContext;
 import org.example.dto.ExchangeRateDTO;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
@@ -22,8 +20,8 @@ public class ExchangeRateServlet extends BaseServlet {
     private static final Logger logger = LoggerFactory.getLogger(ExchangeRateServlet.class);
 
     @Override
-    public void init() throws ServletException {
-        this.exchangeRateService = ApplicationContext.exchangeRateService();
+    public void init() {
+        this.exchangeRateService = (ExchangeRateService) getServletContext().getAttribute("exchangeRateService");
     }
 
     @Override
