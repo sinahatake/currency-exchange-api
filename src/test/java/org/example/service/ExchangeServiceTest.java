@@ -1,8 +1,8 @@
 package org.example.service;
 
-import org.example.dto.CurrencyDTO;
-import org.example.dto.ExchangeRateDTO;
-import org.example.dto.ExchangeResultDTO;
+import org.example.dto.CurrencyDto;
+import org.example.dto.ExchangeRateDto;
+import org.example.dto.ExchangeResultDto;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,13 +30,13 @@ class ExchangeServiceTest {
     @InjectMocks
     private ExchangeService exchangeService;
 
-    private CurrencyDTO usd;
-    private CurrencyDTO eur;
+    private CurrencyDto usd;
+    private CurrencyDto eur;
 
     @BeforeEach
     void setUp() {
-        usd = new CurrencyDTO(1, "USD", "US Dollar", "$");
-        eur = new CurrencyDTO(2, "EUR", "Euro", "€");
+        usd = new CurrencyDto(1, "USD", "US Dollar", "$");
+        eur = new CurrencyDto(2, "EUR", "Euro", "€");
     }
 
     @Test
@@ -48,10 +48,10 @@ class ExchangeServiceTest {
         when(currencyService.findByCode("USD")).thenReturn(usd);
         when(currencyService.findByCode("EUR")).thenReturn(eur);
         when(exchangeRateService.findByCodes("USD", "EUR"))
-                .thenReturn(Optional.of(new ExchangeRateDTO(1, usd, eur, rate)));
+                .thenReturn(Optional.of(new ExchangeRateDto(1, usd, eur, rate)));
 
         // Act
-        ExchangeResultDTO result = exchangeService.exchange("USD", "EUR", amount);
+        ExchangeResultDto result = exchangeService.exchange("USD", "EUR", amount);
 
         // Assert
         assertEquals(0, new BigDecimal("0.910000").compareTo(result.getRate()));
@@ -69,10 +69,10 @@ class ExchangeServiceTest {
         when(currencyService.findByCode("EUR")).thenReturn(eur);
         when(exchangeRateService.findByCodes("USD", "EUR")).thenReturn(Optional.empty());
         when(exchangeRateService.findByCodes("EUR", "USD"))
-                .thenReturn(Optional.of(new ExchangeRateDTO(1, eur, usd, reverseRate)));
+                .thenReturn(Optional.of(new ExchangeRateDto(1, eur, usd, reverseRate)));
 
         // Act
-        ExchangeResultDTO result = exchangeService.exchange("USD", "EUR", amount);
+        ExchangeResultDto result = exchangeService.exchange("USD", "EUR", amount);
 
         // Assert
         // 1 / 2.0 = 0.5
@@ -83,7 +83,7 @@ class ExchangeServiceTest {
     @Test
     void exchange_CrossRate_CalculatesThroughUsd() {
         // Arrange
-        CurrencyDTO gbp = new CurrencyDTO(3, "GBP", "Pound", "£");
+        CurrencyDto gbp = new CurrencyDto(3, "GBP", "Pound", "£");
         BigDecimal usdToEur = new BigDecimal("0.9");
         BigDecimal usdToGbp = new BigDecimal("0.8");
         BigDecimal amount = new BigDecimal("100");
@@ -96,11 +96,11 @@ class ExchangeServiceTest {
         when(exchangeRateService.findByCodes("GBP", "EUR")).thenReturn(Optional.empty());
 
         // Кросс-курсы через USD
-        when(exchangeRateService.findByCodes("USD", "EUR")).thenReturn(Optional.of(new ExchangeRateDTO(1, usd, eur, usdToEur)));
-        when(exchangeRateService.findByCodes("USD", "GBP")).thenReturn(Optional.of(new ExchangeRateDTO(2, usd, gbp, usdToGbp)));
+        when(exchangeRateService.findByCodes("USD", "EUR")).thenReturn(Optional.of(new ExchangeRateDto(1, usd, eur, usdToEur)));
+        when(exchangeRateService.findByCodes("USD", "GBP")).thenReturn(Optional.of(new ExchangeRateDto(2, usd, gbp, usdToGbp)));
 
         // Act
-        ExchangeResultDTO result = exchangeService.exchange("EUR", "GBP", amount);
+        ExchangeResultDto result = exchangeService.exchange("EUR", "GBP", amount);
 
         // Assert
         // Rate = 0.8 / 0.9 = 0.888889

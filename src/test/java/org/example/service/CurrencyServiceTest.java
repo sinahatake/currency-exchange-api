@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.dao.CurrencyDao;
-import org.example.dto.CurrencyDTO;
+import org.example.dto.CurrencyDto;
 import org.example.entity.Currency;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
@@ -38,13 +38,13 @@ class CurrencyServiceTest {
     void getAllCurrencies_ReturnsList() {
         // Given
         Currency currency = new Currency(1, "USD", "US Dollar", "$");
-        CurrencyDTO dto = new CurrencyDTO(1, "US Dollar", "USD", "$");
+        CurrencyDto dto = new CurrencyDto(1, "US Dollar", "USD", "$");
 
         when(currencyDAO.findAll()).thenReturn(List.of(currency));
         when(currencyMapper.toDto(currency)).thenReturn(dto);
 
         // When
-        List<CurrencyDTO> result = currencyService.getAllCurrencies();
+        List<CurrencyDto> result = currencyService.getAllCurrencies();
 
         // Then
         assertNotNull(result);
@@ -59,13 +59,13 @@ class CurrencyServiceTest {
         // Given
         String code = "EUR";
         Currency currency = new Currency(2, code, "Euro", "€");
-        CurrencyDTO dto = new CurrencyDTO(2, "Euro", code, "€");
+        CurrencyDto dto = new CurrencyDto(2, "Euro", code, "€");
 
         when(currencyDAO.findByCode(code)).thenReturn(Optional.of(currency));
         when(currencyMapper.toDto(currency)).thenReturn(dto);
 
         // When
-        CurrencyDTO result = currencyService.findByCode(code);
+        CurrencyDto result = currencyService.findByCode(code);
 
         // Then
         assertEquals(code, result.getCode());
@@ -90,14 +90,14 @@ class CurrencyServiceTest {
         String name = "British Pound";
         String sign = "£";
         Currency savedCurrency = new Currency(3, code, name, sign);
-        CurrencyDTO expectedDto = new CurrencyDTO(3, name, code, sign);
+        CurrencyDto expectedDto = new CurrencyDto(3, name, code, sign);
 
         when(currencyDAO.findByCode(code)).thenReturn(Optional.empty());
         when(currencyDAO.save(any(Currency.class))).thenReturn(savedCurrency);
         when(currencyMapper.toDto(savedCurrency)).thenReturn(expectedDto);
 
         // When
-        CurrencyDTO result = currencyService.addNewCurrency(code, name, sign);
+        CurrencyDto result = currencyService.addNewCurrency(code, name, sign);
 
         // Then
         assertNotNull(result);

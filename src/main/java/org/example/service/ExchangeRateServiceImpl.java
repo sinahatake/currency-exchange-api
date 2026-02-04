@@ -2,8 +2,8 @@ package org.example.service;
 
 import org.example.dao.CurrencyDao;
 import org.example.dao.ExchangeRateDao;
-import org.example.dto.CurrencyDTO;
-import org.example.dto.ExchangeRateDTO;
+import org.example.dto.CurrencyDto;
+import org.example.dto.ExchangeRateDto;
 import org.example.entity.ExchangeRate;
 import org.example.exceptions.DatabaseException;
 import org.example.exceptions.EntityNotFoundException;
@@ -33,18 +33,18 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
 
     @Override
-    public List<ExchangeRateDTO> getAllExchangeRates() {
-        List<ExchangeRateDTO> exchangeRates = new ArrayList<>();
+    public List<ExchangeRateDto> getAllExchangeRates() {
+        List<ExchangeRateDto> exchangeRates = new ArrayList<>();
         List<ExchangeRate> allExchangeRates = ExchangeRateDao.findAll();
         for (ExchangeRate exchangeRate : allExchangeRates) {
-            ExchangeRateDTO exchangeRateDTO = exchangeRateMapper.toDto(exchangeRate);
+            ExchangeRateDto exchangeRateDTO = exchangeRateMapper.toDto(exchangeRate);
             exchangeRates.add(exchangeRateDTO);
         }
         return exchangeRates;
     }
 
     @Override
-    public ExchangeRateDTO getExchangeRateByCodes(String baseCode, String targetCode) {
+    public ExchangeRateDto getExchangeRateByCodes(String baseCode, String targetCode) {
         if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
         }
@@ -54,9 +54,9 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     @Override
-    public ExchangeRateDTO addExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
-        CurrencyDTO baseCurrency = currencyService.findByCode(baseCode);
-        CurrencyDTO targetCurrency = currencyService.findByCode(targetCode);
+    public ExchangeRateDto addExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
+        CurrencyDto baseCurrency = currencyService.findByCode(baseCode);
+        CurrencyDto targetCurrency = currencyService.findByCode(targetCode);
 
         if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
@@ -70,7 +70,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
             throw new EntityNotFoundException("Currency " + baseCode + " is not exists");
         }
 
-        ExchangeRateDTO exchangeRate = new ExchangeRateDTO();
+        ExchangeRateDto exchangeRate = new ExchangeRateDto();
         exchangeRate.setBaseCurrency(baseCurrency);
         exchangeRate.setTargetCurrency(targetCurrency);
         exchangeRate.setRate(rate);
@@ -80,7 +80,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     @Override
-    public ExchangeRateDTO updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
+    public ExchangeRateDto updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
         }
@@ -100,7 +100,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     @Override
-    public Optional<ExchangeRateDTO> findByCodes(String baseCode, String targetCode) {
+    public Optional<ExchangeRateDto> findByCodes(String baseCode, String targetCode) {
         return ExchangeRateDao.findByCurrencyCodes(baseCode, targetCode)
                 .map(exchangeRateMapper::toDto);
     }

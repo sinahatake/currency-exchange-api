@@ -1,8 +1,8 @@
 package org.example.service;
 
 import org.example.dao.ExchangeRateDao;
-import org.example.dto.CurrencyDTO;
-import org.example.dto.ExchangeRateDTO;
+import org.example.dto.CurrencyDto;
+import org.example.dto.ExchangeRateDto;
 import org.example.entity.ExchangeRate;
 import org.example.exceptions.AlreadyExistsException;
 import org.example.exceptions.EntityNotFoundException;
@@ -44,12 +44,12 @@ class ExchangeRateServiceTest {
     void getAllExchangeRates_ReturnsList() {
         // Arrange
         ExchangeRate entity = new ExchangeRate();
-        ExchangeRateDTO dto = new ExchangeRateDTO();
+        ExchangeRateDto dto = new ExchangeRateDto();
         when(exchangeRateDAO.findAll()).thenReturn(List.of(entity));
         when(exchangeRateMapper.toDto(entity)).thenReturn(dto);
 
         // Act
-        List<ExchangeRateDTO> result = exchangeRateService.getAllExchangeRates();
+        List<ExchangeRateDto> result = exchangeRateService.getAllExchangeRates();
 
         // Assert
         assertEquals(1, result.size());
@@ -72,8 +72,8 @@ class ExchangeRateServiceTest {
     @DisplayName("Должен выбросить исключение при добавлении дубликата курса")
     void addExchangeRate_AlreadyExists_ThrowsException() {
         // Arrange
-        when(currencyService.findByCode("USD")).thenReturn(new CurrencyDTO());
-        when(currencyService.findByCode("EUR")).thenReturn(new CurrencyDTO());
+        when(currencyService.findByCode("USD")).thenReturn(new CurrencyDto());
+        when(currencyService.findByCode("EUR")).thenReturn(new CurrencyDto());
         when(exchangeRateDAO.findByCurrencyCodes("USD", "EUR")).thenReturn(Optional.of(new ExchangeRate()));
 
         // Act & Assert
@@ -106,12 +106,12 @@ class ExchangeRateServiceTest {
         when(exchangeRateDAO.update(existingEntity)).thenReturn(true);
 
         // Настраиваем маппер, чтобы он вернул DTO с новым курсом
-        ExchangeRateDTO expectedDto = new ExchangeRateDTO();
+        ExchangeRateDto expectedDto = new ExchangeRateDto();
         expectedDto.setRate(newRate.setScale(2, RoundingMode.HALF_UP));
         when(exchangeRateMapper.toDto(existingEntity)).thenReturn(expectedDto);
 
         // Act
-        ExchangeRateDTO result = exchangeRateService.updateExchangeRate(base, target, newRate);
+        ExchangeRateDto result = exchangeRateService.updateExchangeRate(base, target, newRate);
 
         // Assert
         assertNotNull(result);

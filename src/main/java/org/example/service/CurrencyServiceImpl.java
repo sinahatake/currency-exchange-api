@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.dao.CurrencyDao;
-import org.example.dto.CurrencyDTO;
+import org.example.dto.CurrencyDto;
 import org.example.entity.Currency;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
@@ -22,17 +22,17 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
 
-    public List<CurrencyDTO> getAllCurrencies() {
-        List<CurrencyDTO> currencies = new ArrayList<>();
+    public List<CurrencyDto> getAllCurrencies() {
+        List<CurrencyDto> currencies = new ArrayList<>();
         List<Currency> allCurrencies = CurrencyDao.findAll();
         for (Currency currency : allCurrencies) {
-            CurrencyDTO currencyDTO = currencyMapper.toDto(currency);
+            CurrencyDto currencyDTO = currencyMapper.toDto(currency);
             currencies.add(currencyDTO);
         }
         return currencies;
     }
 
-    public CurrencyDTO findByCode(String code) {
+    public CurrencyDto findByCode(String code) {
         if (code == null || code.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
         }
@@ -41,7 +41,7 @@ public class CurrencyServiceImpl implements CurrencyService {
                 .orElseThrow(() -> new EntityNotFoundException("Currency with code " + code + " not found"));
     }
 
-    public CurrencyDTO addNewCurrency(String code, String name, String sign) {
+    public CurrencyDto addNewCurrency(String code, String name, String sign) {
         if (code == null || code.isBlank() ||
             name == null || name.isBlank() ||
             sign == null || sign.isBlank()) {

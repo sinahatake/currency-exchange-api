@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CurrencyDTO {
+public class ExchangeRateDto {
     private int id;
-    private String name;
-    private String code;
-    private String sign;
+    private CurrencyDto baseCurrency;
+    private CurrencyDto targetCurrency;
+    private BigDecimal rate;
 }

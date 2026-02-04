@@ -21,9 +21,15 @@ dependencies {
     // Jackson - оставляем одну версию
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
 
-    // Lombok
+    //Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    //MapStruct
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     // Тесты
     testImplementation platform('org.junit:junit-bom:5.10.0')

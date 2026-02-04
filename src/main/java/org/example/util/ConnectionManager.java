@@ -7,8 +7,11 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ConnectionManager {
+public final class ConnectionManager {
     private static final HikariDataSource ds;
+
+    private ConnectionManager() {
+    }
 
     static {
         try {

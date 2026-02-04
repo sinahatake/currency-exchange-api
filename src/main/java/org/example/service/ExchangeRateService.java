@@ -1,19 +1,19 @@
 package org.example.service;
 
-import org.example.dto.ExchangeRateDTO;
+import org.example.dto.ExchangeRateDto;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 public interface ExchangeRateService {
-    List<ExchangeRateDTO> getAllExchangeRates();
+    List<ExchangeRateDto> getAllExchangeRates();
 
-    ExchangeRateDTO getExchangeRateByCodes(String baseCode, String targetCode);
+    ExchangeRateDto getExchangeRateByCodes(String baseCode, String targetCode);
 
-    ExchangeRateDTO addExchangeRate(String baseCode, String targetCode, BigDecimal rate);
+    ExchangeRateDto addExchangeRate(String baseCode, String targetCode, BigDecimal rate);
 
-    ExchangeRateDTO updateExchangeRate(String baseCode, String targetCode, BigDecimal rate);
+    ExchangeRateDto updateExchangeRate(String baseCode, String targetCode, BigDecimal rate);
 
-    Optional<ExchangeRateDTO> findByCodes(String baseCode, String targetCode);
+    Optional<ExchangeRateDto> findByCodes(String baseCode, String targetCode);
 }

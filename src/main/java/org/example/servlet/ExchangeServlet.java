@@ -3,7 +3,7 @@ package org.example.servlet;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.ExchangeResultDTO;
+import org.example.dto.ExchangeResultDto;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
 import org.example.service.ExchangeService;
@@ -25,7 +25,6 @@ public class ExchangeServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
 
         String baseCode = request.getParameter("from");
         String targetCode = request.getParameter("to");
@@ -46,7 +45,7 @@ public class ExchangeServlet extends BaseServlet {
                 throw new InvalidParameterException("Invalid amount format: must be a decimal number");
             }
 
-            ExchangeResultDTO dto = exchangeService.exchange(baseCode, targetCode, amount);
+            ExchangeResultDto dto = exchangeService.exchange(baseCode, targetCode, amount);
 
             logger.info("Exchange calculated: {} {} -> {} {} (Rate: {})",
                     amount, baseCode, dto.getConvertedAmount(), targetCode, dto.getRate());

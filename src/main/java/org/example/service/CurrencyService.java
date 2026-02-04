@@ -1,13 +1,13 @@
 package org.example.service;
 
-import org.example.dto.CurrencyDTO;
+import org.example.dto.CurrencyDto;
 
 import java.util.List;
 
 public interface CurrencyService {
-    List<CurrencyDTO> getAllCurrencies();
+    List<CurrencyDto> getAllCurrencies();
 
-    CurrencyDTO findByCode(String code);
+    CurrencyDto findByCode(String code);
 
-    CurrencyDTO addNewCurrency(String code, String name, String sign);
+    CurrencyDto addNewCurrency(String code, String name, String sign);
 }

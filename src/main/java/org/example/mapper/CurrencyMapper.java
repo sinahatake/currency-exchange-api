@@ -1,28 +1,16 @@
 package org.example.mapper;
 
-import org.example.dto.CurrencyDTO;
+import org.example.dto.CurrencyDto;
 import org.example.entity.Currency;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public final class CurrencyMapper {
+@Mapper(componentModel = "reference") // Используем простой доступ без DI контейнеров
+public interface CurrencyMapper {
 
-    public CurrencyMapper() {
-    }
+    @Mapping(source = "fullName", target = "name")
+    CurrencyDto toDto(Currency currency);
 
-    public CurrencyDTO toDto(Currency currency) {
-        CurrencyDTO dto = new CurrencyDTO();
-        dto.setId(currency.getId());
-        dto.setCode(currency.getCode());
-        dto.setName(currency.getFullName());
-        dto.setSign(currency.getSign());
-        return dto;
-    }
-
-    public Currency toEntity(CurrencyDTO dto) {
-        Currency currency = new Currency();
-        currency.setId(dto.getId());
-        currency.setCode(dto.getCode());
-        currency.setFullName(dto.getName());
-        currency.setSign(dto.getSign());
-        return currency;
-    }
+    @Mapping(source = "name", target = "fullName")
+    Currency toEntity(CurrencyDto dto);
 }

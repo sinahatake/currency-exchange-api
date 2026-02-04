@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExchangeResultDTO {
-    private CurrencyDTO baseCurrency;
-    private CurrencyDTO targetCurrency;
+public class ExchangeResultDto {
+    private CurrencyDto baseCurrency;
+    private CurrencyDto targetCurrency;
     private BigDecimal rate;
     private BigDecimal amount;
     private BigDecimal convertedAmount;

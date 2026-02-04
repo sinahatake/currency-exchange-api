@@ -1,9 +1,9 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.CurrencyDTO;
-import org.example.dto.ExchangeRateDTO;
-import org.example.dto.ExchangeResultDTO;
+import org.example.dto.CurrencyDto;
+import org.example.dto.ExchangeRateDto;
+import org.example.dto.ExchangeResultDto;
 import org.example.exceptions.EntityNotFoundException;
 import org.example.exceptions.InvalidParameterException;
 
@@ -17,15 +17,15 @@ public class ExchangeServiceImpl implements ExchangeService {
     private final ExchangeRateServiceImpl exchangeRateService;
 
     @Override
-    public ExchangeResultDTO exchange(String baseCode, String targetCode, BigDecimal amount) {
+    public ExchangeResultDto exchange(String baseCode, String targetCode, BigDecimal amount) {
         if (baseCode == null || baseCode.length() != 3 || targetCode == null || targetCode.length() != 3) {
             throw new InvalidParameterException("Invalid currency code");
         }
 
-        ExchangeResultDTO result = new ExchangeResultDTO();
+        ExchangeResultDto result = new ExchangeResultDto();
 
-        CurrencyDTO baseCurrency = currencyService.findByCode(baseCode);
-        CurrencyDTO targetCurrency = currencyService.findByCode(targetCode);
+        CurrencyDto baseCurrency = currencyService.findByCode(baseCode);
+        CurrencyDto targetCurrency = currencyService.findByCode(targetCode);
 
         result.setBaseCurrency(baseCurrency);
         result.setTargetCurrency(targetCurrency);
@@ -40,18 +40,18 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     private BigDecimal calculateRate(String baseCode, String targetCode) {
-        Optional<ExchangeRateDTO> directRate = exchangeRateService.findByCodes(baseCode, targetCode);
+        Optional<ExchangeRateDto> directRate = exchangeRateService.findByCodes(baseCode, targetCode);
         if (directRate.isPresent()) {
             return directRate.get().getRate();
         }
 
-        Optional<ExchangeRateDTO> reverseRate = exchangeRateService.findByCodes(targetCode, baseCode);
+        Optional<ExchangeRateDto> reverseRate = exchangeRateService.findByCodes(targetCode, baseCode);
         if (reverseRate.isPresent()) {
             return BigDecimal.ONE.divide(reverseRate.get().getRate(), 10, RoundingMode.HALF_UP);
         }
 
-        Optional<ExchangeRateDTO> usdToBase = exchangeRateService.findByCodes("USD", baseCode);
-        Optional<ExchangeRateDTO> usdToTarget = exchangeRateService.findByCodes("USD", targetCode);
+        Optional<ExchangeRateDto> usdToBase = exchangeRateService.findByCodes("USD", baseCode);
+        Optional<ExchangeRateDto> usdToTarget = exchangeRateService.findByCodes("USD", targetCode);
 
         if (usdToBase.isPresent() && usdToTarget.isPresent()) {
             BigDecimal usdToBaseRate = usdToBase.get().getRate();
